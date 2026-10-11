@@ -1,0 +1,45 @@
+site_name: whatsapp2pdf
+site_description: Turn WhatsApp chat exports into bubble-style PDFs you can keep.
+site_url: https://jasalguero.github.io/whatsapp2pdf/
+repo_url: https://github.com/jasalguero/whatsapp2pdf
+repo_name: jasalguero/whatsapp2pdf
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: teal
+      accent: green
+      toggle:
+        icon: material/weather-night
+        name: Dark mode
+    - scheme: slate
+      primary: teal
+      accent: green
+      toggle:
+        icon: material/weather-sunny
+        name: Light mode
+  features:
+    - content.code.copy
+    - navigation.sections
+
+nav:
+  - Home: index.md
+  - Export a chat: export.md
+  - Command line: cli.md
+  - Python API: api.md
+  - Privacy & security: privacy.md
+  - FAQ: faq.md
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true

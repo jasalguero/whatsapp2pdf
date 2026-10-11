@@ -1,0 +1,18 @@
+whatsapp2pdf
+Copyright (c) 2026 Jose (https://github.com/jasalguero)
+Licensed under the MIT License (see LICENSE).
+
+This package bundles third-party fonts that are NOT covered by the MIT License:
+
+  Noto Sans Regular and Noto Sans Bold, version 2.015
+  Copyright 2022 The Noto Project Authors
+  https://github.com/notofonts/latin-greek-cyrillic
+  Licensed under the SIL Open Font License, Version 1.1
+  (see src/whatsapp2pdf/fonts/OFL.txt)
+
+Emoji are not bundled. When a color emoji font is found on the user's system
+(or passed with --emoji-font), its glyphs are rasterized into the generated
+PDF. Those glyphs remain subject to that font's own license.
+
+whatsapp2pdf is not affiliated with, endorsed by, or sponsored by WhatsApp or
+Meta Platforms, Inc. "WhatsApp" is a trademark of WhatsApp LLC.

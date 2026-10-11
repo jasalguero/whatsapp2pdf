@@ -1,0 +1,60 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "whatsapp2pdf"
+dynamic = ["version"]
+description = "Convert exported WhatsApp chats, including media ZIPs, into familiar bubble-style PDFs."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE", "NOTICE", "src/whatsapp2pdf/fonts/OFL.txt"]
+authors = [{ name = "Jose" }]
+keywords = ["whatsapp", "pdf", "chat", "export", "archive", "backup", "converter"]
+dependencies = [
+  "Pillow>=10.0",
+  "reportlab>=4.0",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: End Users/Desktop",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Communications :: Chat",
+  "Topic :: Multimedia :: Graphics",
+  "Topic :: System :: Archiving",
+  "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://jasalguero.github.io/whatsapp2pdf/"
+Documentation = "https://jasalguero.github.io/whatsapp2pdf/"
+Source = "https://github.com/jasalguero/whatsapp2pdf"
+Issues = "https://github.com/jasalguero/whatsapp2pdf/issues"
+Changelog = "https://github.com/jasalguero/whatsapp2pdf/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+test = ["pytest>=8", "pypdf>=4"]
+
+[project.scripts]
+whatsapp2pdf = "whatsapp2pdf.cli:main"
+
+[tool.hatch.version]
+path = "src/whatsapp2pdf/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/whatsapp2pdf"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src", "tests", "LICENSE", "NOTICE", "README.md", "CHANGELOG.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

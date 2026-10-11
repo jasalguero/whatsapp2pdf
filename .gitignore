@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Docs build
+site/
+docs/_site/
+
+# Never commit real chat exports or generated PDFs.
+# Synthetic fixtures belong in tests/ and are built at test time.
+*.zip
+*.pdf
+/*.txt
+WhatsApp Chat*
+_chat.txt
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
