@@ -1,12 +1,14 @@
 name: Release
 
-# Pushing a tag like v0.1.0 builds the package, publishes it to PyPI and
-# creates the matching GitHub release.
+# Pushing a tag like v0.1.0, or running this workflow by hand from the
+# Actions tab, builds the package, publishes it to PyPI and creates the
+# GitHub release (and tag) for the version in src/whatsapp2pdf/__init__.py.
 # One-time setup: add this repository as a "trusted publisher" for the
 # whatsapp2pdf project on pypi.org (workflow: release.yml, environment: pypi).
 on:
   push:
     tags: ["v*"]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -14,15 +16,21 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.version.outputs.tag }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Check the tag matches the package version
+      - name: Work out the release tag
+        id: version
         run: |
           version=$(python -c "import re; print(re.search(r'__version__ = \"(.+?)\"', open('src/whatsapp2pdf/__init__.py').read()).group(1))")
-          test "v$version" = "$GITHUB_REF_NAME" || { echo "Tag $GITHUB_REF_NAME does not match version $version"; exit 1; }
+          if [ "$GITHUB_REF_TYPE" = "tag" ] && [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match version $version"; exit 1
+          fi
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
       - run: python -m pip install build twine
       - run: python -m build
       - run: python -m twine check --strict dist/*
@@ -45,7 +53,7 @@ jobs:
       - uses: pypa/gh-action-pypi-publish@release/v1
 
   github-release:
-    needs: publish
+    needs: [build, publish]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -58,7 +66,8 @@ jobs:
       - name: Create the GitHub release from the changelog
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.build.outputs.tag }}
         run: |
-          version="${GITHUB_REF_NAME#v}"
+          version="${TAG#v}"
           awk -v v="$version" '$0 ~ "^## \\[" v "\\]" {on=1; next} /^## \[/ {on=0} on' CHANGELOG.md > notes.md
-          gh release create "$GITHUB_REF_NAME" dist/* --title "$GITHUB_REF_NAME" --notes-file notes.md
+          gh release create "$TAG" dist/* --target "$GITHUB_SHA" --title "$TAG" --notes-file notes.md
